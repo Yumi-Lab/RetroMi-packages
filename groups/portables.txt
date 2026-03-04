@@ -1,0 +1,10 @@
+# Consoles portables et consoles rares
+lr-beetle-ngp
+lr-beetle-lynx
+lr-beetle-vb
+lr-pokemini
+lr-gw
+lr-prosystem
+lr-o2em
+lr-vecx
+lr-freechaf

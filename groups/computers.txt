@@ -1,17 +1,8 @@
-# Ordinateurs 8/16-bit — home computers
-# Amiga (UAE4ARM — build natif ARM, plus rapide que lr-puae sur H3)
-lr-uae4arm
-# Commodore 64 / VIC-20 / PET
+# Ordinateurs 8/16-bit (légers — ZX Spectrum, MSX, Atari, Amstrad...)
 lr-vice
-# MSX / ColecoVision / SG-1000
 lr-bluemsx
-# Atari 400/800/5200/XL/XE
 lr-atari800
-# Amstrad CPC
 lr-caprice32
-# ZX Spectrum
 lr-fuse
-# ZX81
 lr-81
-# Thomson MO/TO (ordinateurs français)
 lr-theodore

@@ -1,4 +1,4 @@
-# Nintendo platforms
+# Nintendo — NES / SNES / GB / GBA (légers)
 # NES
 lr-fceumm
 lr-nestopia
@@ -13,8 +13,3 @@ lr-tgbdual
 lr-mgba
 lr-gpsp
 lr-vba-next
-# Nintendo 64 — mupen64plus-next a un meilleur JIT ARM → meilleures perfs sur H3
-lr-mupen64plus
-lr-mupen64plus-next
-# PC Engine / TurboGrafx-16
-lr-beetle-pce-fast

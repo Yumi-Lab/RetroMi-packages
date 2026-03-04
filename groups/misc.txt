@@ -1,33 +1,8 @@
-# Divers — ports, jeux, consoles portables alternatives
-# Doom (PrBoom)
+# Divers — ports et jeux (légers)
 lr-prboom
-# Quake 1
 lr-tyrquake
-# Cave Story (NxEngine)
 lr-nxengine
-# ScummVM — jeux d'aventure Lucas Arts / Sierra
 lr-scummvm
-# DOS (DOSBox Pure)
 lr-dosbox-pure
-# Atari 2600
 lr-stella2014
-# Neo Geo Pocket / Color
-lr-beetle-ngp
-# Atari Lynx
-lr-beetle-lynx
-# Virtual Boy (Nintendo)
-lr-beetle-vb
-# Pokemon Mini
-lr-pokemini
-# Game & Watch (LCD games)
-lr-gw
-# Atari 7800
-lr-prosystem
-# Odyssey² / Videopac
-lr-o2em
-# Vectrex
-lr-vecx
-# Fairchild Channel F
-lr-freechaf
-# Sega Master System / Game Gear (standalone core)
 lr-smsplus-gx

@@ -1,0 +1,4 @@
+# Arcade compat — MAME versions légères + FBA 2012
+lr-mame2003-plus
+lr-mame2000
+lr-fbalpha2012

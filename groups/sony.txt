@@ -1,7 +1,5 @@
-# Sony platforms
-# PlayStation 1 — recommandé sur H3 (JIT ARM optimisé)
+# Sony — PlayStation 1
+# PS1 recommandé sur H3 (JIT ARM optimisé)
 lr-pcsx-rearmed
-# PlayStation 1 haute précision (Mednafen/Beetle — trop lourd en pratique sur H3)
+# PS1 haute précision (Mednafen/Beetle)
 lr-beetle-psx
-# PSP (trop lourd pour H3 — compilé pour disponibilité)
-lr-ppsspp

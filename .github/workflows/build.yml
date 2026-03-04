@@ -19,13 +19,26 @@ jobs:
       fail-fast: false
       matrix:
         group:
+          # Core
           - retroarch
+          # Arcade (split: fbneo seul + compat MAME)
           - arcade
+          - arcade-compat
+          # Nintendo (split: classiques + N64)
           - nintendo
+          - n64
+          # Sega
           - sega
+          # Sony (split: PS1 + PSP)
           - sony
+          - psp
+          # Divers (split: ports + portables)
           - misc
+          - portables
+          # Ordinateurs (split: home computers + Amiga)
           - computers
+          - amiga
+          # Lourds (DS, Dreamcast, Saturn)
           - heavy
 
     steps:
@@ -83,22 +96,22 @@ jobs:
             | Package | Contents |
             |---------|----------|
             | `packages-retroarch-armhf.tar.gz` | RetroArch frontend + assets |
-            | `packages-arcade-armhf.tar.gz` | lr-fbneo, lr-mame2003-plus, lr-mame2000, lr-fbalpha2012 |
-            | `packages-nintendo-armhf.tar.gz` | NES (fceumm, nestopia, mesen, quicknes), SNES (snes9x2010), GB/GBC (gambatte, tgbdual), GBA (mgba, gpsp, vba-next), N64 (mupen64plus, mupen64plus-next), PC Engine (beetle-pce-fast) |
-            | `packages-sega-armhf.tar.gz` | Genesis/MD/CD/GG (genesis-plus-gx), Sega CD/32X (picodrive) |
-            | `packages-sony-armhf.tar.gz` | PS1 (pcsx-rearmed, beetle-psx), PSP (ppsspp) |
-            | `packages-misc-armhf.tar.gz` | Doom, Quake, Cave Story, ScummVM, DOS, Atari 2600, Neo Geo Pocket, Atari Lynx, Virtual Boy, Pokemon Mini, Game & Watch, Atari 7800, Odyssey2, Vectrex, Fairchild, SMS/GG |
-            | `packages-computers-armhf.tar.gz` | Amiga (uae4arm), C64 (vice), MSX (bluemsx), Atari 8-bit (atari800), Amstrad CPC (caprice32), ZX Spectrum (fuse), ZX81 (lr-81), Thomson (theodore) |
+            | `packages-arcade-armhf.tar.gz` | FinalBurn Neo (lr-fbneo) |
+            | `packages-arcade-compat-armhf.tar.gz` | MAME 2003+, MAME 2000, FBA 2012 |
+            | `packages-nintendo-armhf.tar.gz` | NES (fceumm, nestopia, mesen, quicknes), SNES (snes9x2010), GB/GBC (gambatte, tgbdual), GBA (mgba, gpsp, vba-next) |
+            | `packages-n64-armhf.tar.gz` | N64 (mupen64plus, mupen64plus-next), PC Engine (beetle-pce-fast) |
+            | `packages-sega-armhf.tar.gz` | Genesis/MD/CD (genesis-plus-gx), Sega CD/32X (picodrive) |
+            | `packages-sony-armhf.tar.gz` | PS1 (pcsx-rearmed, beetle-psx) |
+            | `packages-psp-armhf.tar.gz` | PSP (ppsspp) |
+            | `packages-misc-armhf.tar.gz` | Doom, Quake, Cave Story, ScummVM, DOS, Atari 2600, SMS/GG |
+            | `packages-portables-armhf.tar.gz` | Neo Geo Pocket, Atari Lynx, Virtual Boy, Pokemon Mini, Game & Watch, Atari 7800, Odyssey², Vectrex, Fairchild |
+            | `packages-computers-armhf.tar.gz` | C64 (vice), MSX (bluemsx), Atari 8-bit (atari800), Amstrad CPC (caprice32), ZX Spectrum (fuse), ZX81, Thomson (theodore) |
+            | `packages-amiga-armhf.tar.gz` | Amiga (uae4arm) |
             | `packages-heavy-armhf.tar.gz` | Nintendo DS (desmume2015), Dreamcast (flycast), Saturn (yabause, kronos, beetle-saturn) |
 
-            > ⚠️ Packages in `heavy` may run too slowly on SmartPi One (H3 armhf). They are included for completeness.
+            > ⚠️ Packages in `heavy` and `psp` may run too slowly on SmartPi One (H3 armhf). Included for completeness.
 
-            Built from [YUMI-RETROPIE](https://github.com/Yumi-Lab/YUMI-RETROPIE) on Debian Bookworm (armhf).
-
-            ## Usage
-
-            These packages are automatically downloaded by the RetroMi image builder.
-            You do not need to install them manually.
+            Built from [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup) on Debian Bookworm (armhf).
           files: artifacts/**/*.tar.gz
           draft: false
           fail_on_unmatched_files: true
