@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.group == 'scummvm' && 'self-hosted' || 'ubuntu-latest' }}
     strategy:
       fail-fast: false
       matrix:
