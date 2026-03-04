@@ -6,6 +6,9 @@ lr-mesen
 lr-quicknes
 # SNES
 lr-snes9x2010
+lr-snes9x
+lr-snes9x2005
+lr-snes9x2002
 # Game Boy / Game Boy Color
 lr-gambatte
 lr-tgbdual

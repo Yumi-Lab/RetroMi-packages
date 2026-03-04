@@ -2,5 +2,6 @@
 # N64 — mupen64plus-next a un meilleur JIT ARM → meilleures perfs sur H3
 lr-mupen64plus
 lr-mupen64plus-next
+lr-parallel-n64
 # PC Engine / TurboGrafx-16
 lr-beetle-pce-fast

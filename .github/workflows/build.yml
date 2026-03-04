@@ -37,10 +37,11 @@ jobs:
           - scummvm
           - dosbox
           - portables
-          # Ordinateurs (split: home computers + Amiga)
+          # Ordinateurs (split: home computers + Amiga + Japon)
           - computers
           - amiga
-          # Lourds (DS, Dreamcast, Saturn)
+          - japan-computers
+          # Lourds (DS, Dreamcast, Saturn, 3DO, Jaguar)
           - heavy
 
     steps:

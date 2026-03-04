@@ -1,0 +1,5 @@
+# Ordinateurs japonais — PC-98, PC-88, X68000, Sharp X1
+lr-np2kai
+lr-quasi88
+lr-px68k
+lr-x1

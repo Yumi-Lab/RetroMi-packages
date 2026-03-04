@@ -1,2 +1,4 @@
 # Amiga — seul dans ce groupe (UAE4ARM compilation longue)
 lr-uae4arm
+lr-puae
+lr-puae2021

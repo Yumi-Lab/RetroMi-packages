@@ -1,8 +1,10 @@
 # Ordinateurs 8/16-bit (légers — ZX Spectrum, MSX, Atari, Amstrad...)
 lr-vice
 lr-bluemsx
+lr-fmsx
 lr-atari800
 lr-caprice32
 lr-fuse
 lr-81
 lr-theodore
+lr-hatari

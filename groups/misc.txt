@@ -3,4 +3,11 @@ lr-prboom
 lr-tyrquake
 lr-nxengine
 lr-stella2014
+lr-stella
 lr-smsplus-gx
+lr-dosbox
+lr-mrboom
+lr-retro8
+lr-xrick
+lr-dinothawr
+lr-tic80

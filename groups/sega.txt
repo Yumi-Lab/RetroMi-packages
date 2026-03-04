@@ -3,3 +3,7 @@
 lr-genesis-plus-gx
 # Sega CD / 32X / Mega Drive
 lr-picodrive
+# Master System / Game Gear
+lr-gearsystem
+# Neo Geo CD
+lr-neocd

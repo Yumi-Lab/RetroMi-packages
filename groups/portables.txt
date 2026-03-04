@@ -2,9 +2,15 @@
 lr-beetle-ngp
 lr-beetle-lynx
 lr-beetle-vb
+lr-beetle-wswan
+lr-beetle-supergrafx
+lr-beetle-pce
+lr-beetle-pcfx
 lr-pokemini
 lr-gw
 lr-prosystem
 lr-o2em
 lr-vecx
 lr-freechaf
+lr-freeintv
+lr-handy
