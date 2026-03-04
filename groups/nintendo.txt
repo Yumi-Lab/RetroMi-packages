@@ -1,13 +1,18 @@
-# Nintendo platforms — main section
+# Nintendo platforms
 # NES
 lr-fceumm
 lr-nestopia
-# SNES (arm=main → main on armhf)
+lr-mesen
+lr-quicknes
+# SNES
 lr-snes9x2010
 # Game Boy / Game Boy Color
 lr-gambatte
+lr-tgbdual
 # Game Boy Advance
 lr-mgba
+lr-gpsp
+lr-vba-next
 # Nintendo 64 — mupen64plus-next a un meilleur JIT ARM → meilleures perfs sur H3
 lr-mupen64plus
 lr-mupen64plus-next

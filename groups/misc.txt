@@ -1,21 +1,33 @@
-# Divers — ports, DOS, ScummVM, Doom, ordinateurs 8-bit
+# Divers — ports, jeux, consoles portables alternatives
 # Doom (PrBoom)
 lr-prboom
+# Quake 1
+lr-tyrquake
 # Cave Story (NxEngine)
 lr-nxengine
 # ScummVM — jeux d'aventure Lucas Arts / Sierra
 lr-scummvm
-# DOS (DOSBox Pure — expérimental mais fonctionnel sur H3)
+# DOS (DOSBox Pure)
 lr-dosbox-pure
 # Atari 2600
 lr-stella2014
-# Game Boy Advance — alternative légère à lr-mgba
-lr-gpsp
-# Commodore 64 / VIC-20 / PET
-lr-vice
-# MSX / ColecoVision / SG-1000
-lr-bluemsx
-# Sega Master System / Game Gear (standalone)
+# Neo Geo Pocket / Color
+lr-beetle-ngp
+# Atari Lynx
+lr-beetle-lynx
+# Virtual Boy (Nintendo)
+lr-beetle-vb
+# Pokemon Mini
+lr-pokemini
+# Game & Watch (LCD games)
+lr-gw
+# Atari 7800
+lr-prosystem
+# Odyssey² / Videopac
+lr-o2em
+# Vectrex
+lr-vecx
+# Fairchild Channel F
+lr-freechaf
+# Sega Master System / Game Gear (standalone core)
 lr-smsplus-gx
-# Amiga (UAE4ARM — build natif ARM, plus rapide que lr-puae sur H3)
-lr-uae4arm

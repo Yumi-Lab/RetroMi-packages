@@ -1,0 +1,11 @@
+# Émulateurs lourds — compilés mais potentiellement trop lents sur H3 armhf
+# Nintendo DS (borderline sur H3 — frameskip élevé nécessaire)
+lr-desmume2015
+# Dreamcast (trop lourd pour H3 en pratique)
+lr-flycast
+# Sega Saturn (yabause — émulation imprécise mais plus légère)
+lr-yabause
+# Sega Saturn (kronos — haute précision, très lourd)
+lr-kronos
+# Sega Saturn (beetle-saturn — port Mednafen)
+lr-beetle-saturn
