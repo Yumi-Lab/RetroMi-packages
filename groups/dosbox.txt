@@ -1,0 +1,2 @@
+# DosBox Pure — compilation longue, seul dans son groupe
+lr-dosbox-pure

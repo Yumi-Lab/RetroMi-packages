@@ -1,0 +1,2 @@
+# ScummVM — compilation longue (C++ massif), seul dans son groupe
+lr-scummvm

@@ -2,7 +2,5 @@
 lr-prboom
 lr-tyrquake
 lr-nxengine
-lr-scummvm
-lr-dosbox-pure
 lr-stella2014
 lr-smsplus-gx

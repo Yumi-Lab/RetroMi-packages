@@ -32,8 +32,10 @@ jobs:
           # Sony (split: PS1 + PSP)
           - sony
           - psp
-          # Divers (split: ports + portables)
+          # Divers (split: ports légers + ScummVM seul + DosBox seul + portables)
           - misc
+          - scummvm
+          - dosbox
           - portables
           # Ordinateurs (split: home computers + Amiga)
           - computers
