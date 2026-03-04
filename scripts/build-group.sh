@@ -56,7 +56,8 @@ while IFS= read -r pkg; do
     echo " Installing: ${pkg}"
     echo "================================================================"
 
-    if ! sudo -u pi bash retropie_packages.sh "${pkg}"; then
+    # Run as root but tell RetroPie to install for user 'pi' via __user
+    if ! __user=pi bash retropie_packages.sh "${pkg}"; then
         echo "WARNING: ${pkg} installation failed, continuing..."
         FAILED_PKGS+=("${pkg}")
     fi
