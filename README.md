@@ -2,30 +2,38 @@
 
 Pre-compiled RetroArch and libretro emulator cores for **SmartPi One** (AllWinner H3 — ARMv7 armhf).
 
-These packages are used by the [RetroMi](https://github.com/Yumi-Lab/RetroMi) image builder to avoid compiling emulators from source during the image build, reducing build time from ~4 hours to ~15 minutes.
+These packages are used by the [RetroMi](https://github.com/Yumi-Lab/RetroMi) image builder to avoid compiling emulators from source during the image build, reducing build time from ~12 hours to ~15 minutes.
 
 ## Package groups
 
-| Group | Contents | Est. compile time |
-|-------|----------|-------------------|
-| `retroarch` | RetroArch frontend + assets | ~30 min |
-| `arcade` | lr-fbneo, lr-mame2003-plus, lr-mame2000, lr-fbalpha2012 | ~60 min |
-| `nintendo` | NES (fceumm, nestopia, mesen, quicknes), SNES (snes9x2010), GB/GBC (gambatte, tgbdual), GBA (mgba, gpsp, vba-next), N64 (mupen64plus, mupen64plus-next), PC Engine (beetle-pce-fast) | ~60 min |
-| `sega` | Genesis/MD/CD/GG (genesis-plus-gx), Sega CD/32X (picodrive) | ~20 min |
-| `sony` | PS1 (pcsx-rearmed, beetle-psx), PSP (ppsspp) | ~50 min |
-| `misc` | Doom, Quake, Cave Story, ScummVM, DOS, Atari 2600, Neo Geo Pocket, Atari Lynx, Virtual Boy, Pokemon Mini, Game & Watch, Atari 7800, Odyssey², Vectrex, Fairchild, SMS/GG | ~40 min |
-| `computers` | Amiga (uae4arm), C64 (vice), MSX (bluemsx), Atari 8-bit (atari800), Amstrad CPC (caprice32), ZX Spectrum (fuse), ZX81 (lr-81), Thomson (theodore) | ~35 min |
-| `heavy` | Nintendo DS (desmume2015), Dreamcast (flycast), Saturn (yabause, kronos, beetle-saturn) | ~90 min |
+All 16 groups build **in parallel** → total wall time ≈ longest group.
+
+| Group | Packages | Systems |
+|-------|----------|---------|
+| `retroarch` | RetroArch + assets | Frontend |
+| `arcade` | lr-fbneo | Arcade / Neo Geo / CPS1-2-3 |
+| `arcade-compat` | lr-mame2003-plus, lr-mame2003, lr-mame2000, lr-mame2010, lr-fbalpha2012 | Arcade (MAME compat) |
+| `nintendo` | lr-fceumm, lr-nestopia, lr-mesen, lr-quicknes, lr-snes9x2010, lr-snes9x, lr-snes9x2005, lr-snes9x2002, lr-gambatte, lr-tgbdual, lr-mgba, lr-gpsp, lr-vba-next | NES / SNES / GB / GBC / GBA |
+| `n64` | lr-mupen64plus, lr-mupen64plus-next, lr-parallel-n64, lr-beetle-pce-fast | N64 / PC Engine |
+| `sega` | lr-genesis-plus-gx, lr-picodrive, lr-gearsystem, lr-neocd | Mega Drive / Sega CD / 32X / Master System / Game Gear / Neo Geo CD |
+| `sony` | lr-pcsx-rearmed, lr-beetle-psx | PlayStation 1 |
+| `psp` | lr-ppsspp | PlayStation Portable |
+| `misc` | lr-prboom, lr-tyrquake, lr-nxengine, lr-stella2014, lr-stella, lr-smsplus-gx, lr-dosbox, lr-mrboom, lr-retro8, lr-xrick, lr-dinothawr, lr-tic80 | Doom / Quake / Cave Story / Atari 2600 / DOS / divers |
+| `scummvm` | lr-scummvm | ScummVM (point & click adventures) |
+| `dosbox` | lr-dosbox-pure | DOS (DOSBox Pure) |
+| `portables` | lr-beetle-ngp, lr-beetle-lynx, lr-beetle-vb, lr-beetle-wswan, lr-beetle-supergrafx, lr-beetle-pce, lr-beetle-pcfx, lr-pokemini, lr-gw, lr-prosystem, lr-o2em, lr-vecx, lr-freechaf, lr-freeintv, lr-handy | Neo Geo Pocket / Lynx / Virtual Boy / WonderSwan / PC Engine / Pokémon Mini / Game & Watch / Atari 7800 / Odyssey² / Vectrex / Fairchild / Intellivision |
+| `computers` | lr-vice, lr-bluemsx, lr-fmsx, lr-atari800, lr-caprice32, lr-fuse, lr-81, lr-theodore, lr-hatari | C64 / MSX / Atari 8-bit / Amstrad CPC / ZX Spectrum / ZX81 / Thomson MO/TO / Atari ST |
+| `amiga` | lr-uae4arm, lr-puae, lr-puae2021 | Amiga |
+| `japan-computers` | lr-np2kai, lr-quasi88, lr-px68k, lr-x1 | PC-98 / PC-88 / X68000 / Sharp X1 |
+| `heavy` | lr-desmume2015, lr-desmume, lr-flycast, lr-flycast-dev, lr-yabause, lr-kronos, lr-beetle-saturn, lr-opera, lr-virtualjaguar | Nintendo DS / Dreamcast / Sega Saturn / 3DO / Atari Jaguar |
 
 > ⚠️ Packages in `heavy` may run too slowly on SmartPi One (H3 armhf). Included for completeness.
-
-All 8 groups build **in parallel** → total wall time ≈ longest group (~90 min for `heavy`).
 
 ## Architecture
 
 - **Target**: ARMv7 32-bit (armhf) — Debian Bookworm
 - **Build environment**: Docker `debian:bookworm` with QEMU `linux/arm/v7` emulation
-- **Source**: [YUMI-RETROPIE](https://github.com/Yumi-Lab/YUMI-RETROPIE)
+- **Source**: [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup)
 
 ## Building
 
@@ -37,9 +45,9 @@ Actions → Build RetroMi Packages → Run workflow → version: X.Y.Z
 
 ## How it works
 
-1. GitHub Actions launches 8 parallel jobs (one per group)
+1. GitHub Actions launches 16 parallel jobs (one per group)
 2. Each job runs inside a `debian:bookworm --platform linux/arm/v7` Docker container
-3. Inside the container, YUMI-RETROPIE scripts compile the emulators natively for armhf
+3. Inside the container, RetroPie-Setup scripts compile the emulators natively for armhf
 4. Each job produces `packages-<group>-armhf.tar.gz` containing `/opt/retropie/`
 5. A final job collects all artifacts and creates a GitHub Release
 
