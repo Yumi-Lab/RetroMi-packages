@@ -10,9 +10,10 @@ These packages are used by the [RetroMi](https://github.com/Yumi-Lab/RetroMi) im
 |-------|----------|-----------------|
 | `retroarch` | RetroArch frontend + assets | ~30 min |
 | `arcade` | FinalBurn Neo, MAME 2003 Plus | ~60 min |
-| `nintendo` | NES, SNES, GBA, GB/GBC, N64, PC Engine | ~45 min |
+| `nintendo` | NES, SNES, GBA (mgba + gpsp), GB/GBC, N64 (mupen64plus + next), PC Engine | ~50 min |
 | `sega` | Genesis/MD, Sega CD, 32X, Game Gear | ~20 min |
 | `sony` | PlayStation 1 | ~25 min |
+| `misc` | Doom, Cave Story, ScummVM, DOS, Atari 2600, C64, MSX, SMS/GG, Amiga | ~40 min |
 
 All groups build **in parallel** → total wall time ≈ longest group (~60 min).
 

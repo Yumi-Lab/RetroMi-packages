@@ -24,6 +24,7 @@ jobs:
           - nintendo
           - sega
           - sony
+          - misc
 
     steps:
       - name: Checkout repository
@@ -81,9 +82,10 @@ jobs:
             |---------|----------|
             | `packages-retroarch-armhf.tar.gz` | RetroArch frontend + assets |
             | `packages-arcade-armhf.tar.gz` | FinalBurn Neo (lr-fbneo), MAME 2003 Plus |
-            | `packages-nintendo-armhf.tar.gz` | NES (lr-fceumm, lr-nestopia), SNES (lr-snes9x2010), GBA (lr-mgba), GB/GBC (lr-gambatte), N64 (lr-mupen64plus), PC Engine (lr-beetle-pce-fast) |
+            | `packages-nintendo-armhf.tar.gz` | NES (lr-fceumm, lr-nestopia), SNES (lr-snes9x2010), GBA (lr-mgba, lr-gpsp), GB/GBC (lr-gambatte), N64 (lr-mupen64plus, lr-mupen64plus-next), PC Engine (lr-beetle-pce-fast) |
             | `packages-sega-armhf.tar.gz` | Genesis/MD/CD/GG (lr-genesis-plus-gx), Sega CD/32X (lr-picodrive) |
             | `packages-sony-armhf.tar.gz` | PlayStation 1 (lr-pcsx-rearmed) |
+            | `packages-misc-armhf.tar.gz` | Doom (lr-prboom), Cave Story (lr-nxengine), ScummVM (lr-scummvm), DOS (lr-dosbox-pure), Atari 2600 (lr-stella2014), C64 (lr-vice), MSX (lr-bluemsx), SMS/GG (lr-smsplus-gx), Amiga (lr-uae4arm) |
 
             Built from [YUMI-RETROPIE](https://github.com/Yumi-Lab/YUMI-RETROPIE) on Debian Bookworm (armhf).
 

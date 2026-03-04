@@ -1,0 +1,21 @@
+# Divers — ports, DOS, ScummVM, Doom, ordinateurs 8-bit
+# Doom (PrBoom)
+lr-prboom
+# Cave Story (NxEngine)
+lr-nxengine
+# ScummVM — jeux d'aventure Lucas Arts / Sierra
+lr-scummvm
+# DOS (DOSBox Pure — expérimental mais fonctionnel sur H3)
+lr-dosbox-pure
+# Atari 2600
+lr-stella2014
+# Game Boy Advance — alternative légère à lr-mgba
+lr-gpsp
+# Commodore 64 / VIC-20 / PET
+lr-vice
+# MSX / ColecoVision / SG-1000
+lr-bluemsx
+# Sega Master System / Game Gear (standalone)
+lr-smsplus-gx
+# Amiga (UAE4ARM — build natif ARM, plus rapide que lr-puae sur H3)
+lr-uae4arm
