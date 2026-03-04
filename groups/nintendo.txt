@@ -1,0 +1,14 @@
+# Nintendo platforms — main section
+# NES
+lr-fceumm
+lr-nestopia
+# SNES (arm=main → main on armhf)
+lr-snes9x2010
+# Game Boy / Game Boy Color
+lr-gambatte
+# Game Boy Advance
+lr-mgba
+# Nintendo 64
+lr-mupen64plus
+# PC Engine / TurboGrafx-16
+lr-beetle-pce-fast

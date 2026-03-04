@@ -1,0 +1,5 @@
+# Arcade emulators — main/opt section
+# FinalBurn Neo — main section (armhf) — MAME + FBA arcade emulation
+lr-fbneo
+# MAME 2003 Plus — opt section but widely used on 32-bit ARM
+lr-mame2003-plus

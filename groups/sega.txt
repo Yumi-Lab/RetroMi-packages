@@ -1,0 +1,5 @@
+# Sega platforms — main section
+# Mega Drive / Genesis / Sega CD / Game Gear / Master System
+lr-genesis-plus-gx
+# Sega CD / 32X / Mega Drive
+lr-picodrive

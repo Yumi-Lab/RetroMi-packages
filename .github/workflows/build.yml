@@ -1,0 +1,96 @@
+name: Build RetroMi Packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version (e.g. 1.0.0)'
+        required: true
+        default: '1.0.0'
+
+concurrency:
+  group: build-packages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        group:
+          - retroarch
+          - arcade
+          - nintendo
+          - sega
+          - sony
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU (armhf)
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: linux/arm/v7
+
+      - name: Create output directory
+        run: mkdir -p "${{ github.workspace }}/output"
+
+      - name: Build ${{ matrix.group }} packages (armhf)
+        run: |
+          docker run --platform linux/arm/v7 --rm \
+            -v "${{ github.workspace }}/scripts:/scripts:ro" \
+            -v "${{ github.workspace }}/groups:/groups:ro" \
+            -v "${{ github.workspace }}/output:/output" \
+            debian:bookworm \
+            /bin/bash /scripts/build-group.sh "${{ matrix.group }}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ matrix.group }}-armhf
+          path: output/packages-${{ matrix.group }}-armhf.tar.gz
+          if-no-files-found: error
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: List artifacts
+        run: find artifacts/ -name "*.tar.gz" -ls
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.event.inputs.version }}
+          name: RetroMi Packages v${{ github.event.inputs.version }}
+          body: |
+            Pre-compiled RetroArch and libretro cores for **SmartPi One** (AllWinner H3 — ARMv7 armhf / Debian Bookworm).
+
+            ## Package groups
+
+            | Package | Contents |
+            |---------|----------|
+            | `packages-retroarch-armhf.tar.gz` | RetroArch frontend + assets |
+            | `packages-arcade-armhf.tar.gz` | FinalBurn Neo (lr-fbneo), MAME 2003 Plus |
+            | `packages-nintendo-armhf.tar.gz` | NES (lr-fceumm, lr-nestopia), SNES (lr-snes9x2010), GBA (lr-mgba), GB/GBC (lr-gambatte), N64 (lr-mupen64plus), PC Engine (lr-beetle-pce-fast) |
+            | `packages-sega-armhf.tar.gz` | Genesis/MD/CD/GG (lr-genesis-plus-gx), Sega CD/32X (lr-picodrive) |
+            | `packages-sony-armhf.tar.gz` | PlayStation 1 (lr-pcsx-rearmed) |
+
+            Built from [YUMI-RETROPIE](https://github.com/Yumi-Lab/YUMI-RETROPIE) on Debian Bookworm (armhf).
+
+            ## Usage
+
+            These packages are automatically downloaded by the RetroMi image builder.
+            You do not need to install them manually.
+          files: artifacts/**/*.tar.gz
+          draft: false
+          fail_on_unmatched_files: true

@@ -1,0 +1,3 @@
+# Sony platforms — arm=main section
+# PlayStation 1 (arm=main → main on armhf)
+lr-pcsx-rearmed

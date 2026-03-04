@@ -1,0 +1,2 @@
+# RetroArch frontend — core section (basic_install)
+retroarch
