@@ -7,15 +7,23 @@ on:
         description: 'Package version (e.g. 1.0.0)'
         required: true
         default: '1.0.0'
+      arch:
+        description: 'Target architecture'
+        required: true
+        default: 'armhf'
+        type: choice
+        options:
+          - armhf
+          - arm64
 
 concurrency:
-  group: build-packages-${{ github.ref }}
+  group: build-packages-${{ github.ref }}-${{ inputs.arch }}
   cancel-in-progress: true
 
 jobs:
   build:
-    runs-on: ${{ matrix.group == 'scummvm' && 'self-hosted' || 'ubuntu-latest' }}
-    timeout-minutes: ${{ matrix.group == 'scummvm' && 1000 || 360 }}
+    runs-on: ${{ matrix.group == 'scummvm' && inputs.arch == 'armhf' && 'self-hosted' || 'ubuntu-latest' }}
+    timeout-minutes: ${{ matrix.group == 'scummvm' && inputs.arch == 'armhf' && 1000 || 360 }}
     strategy:
       fail-fast: false
       matrix:
@@ -49,17 +57,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up QEMU (armhf)
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
-          platforms: linux/arm/v7
+          platforms: ${{ inputs.arch == 'armhf' && 'linux/arm/v7' || 'linux/arm64' }}
 
       - name: Create output directory
         run: mkdir -p "${{ github.workspace }}/output"
 
-      - name: Build ${{ matrix.group }} packages (armhf)
+      - name: Build ${{ matrix.group }} packages (${{ inputs.arch }})
+        env:
+          ARCH: ${{ inputs.arch }}
         run: |
-          docker run --platform linux/arm/v7 --rm \
+          PLATFORM="${{ inputs.arch == 'armhf' && 'linux/arm/v7' || 'linux/arm64' }}"
+          docker run --platform "${PLATFORM}" --rm \
+            -e ARCH="${{ inputs.arch }}" \
             -v "${{ github.workspace }}/scripts:/scripts:ro" \
             -v "${{ github.workspace }}/groups:/groups:ro" \
             -v "${{ github.workspace }}/output:/output" \
@@ -69,8 +81,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: packages-${{ matrix.group }}-armhf
-          path: output/packages-${{ matrix.group }}-armhf.tar.gz
+          name: packages-${{ matrix.group }}-${{ inputs.arch }}
+          path: output/packages-${{ matrix.group }}-${{ inputs.arch }}.tar.gz
           if-no-files-found: error
 
   release:
@@ -90,32 +102,34 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ github.event.inputs.version }}
-          name: RetroMi Packages v${{ github.event.inputs.version }}
+          tag_name: v${{ github.event.inputs.version }}-${{ inputs.arch }}
+          name: RetroMi Packages v${{ github.event.inputs.version }} (${{ inputs.arch }})
           body: |
-            Pre-compiled RetroArch and libretro cores for **SmartPi One** (AllWinner H3 — ARMv7 armhf / Debian Bookworm).
+            Pre-compiled RetroArch and libretro cores for **SmartPi** — `${{ inputs.arch }}` / Debian Bookworm.
+
+            ${{ inputs.arch == 'armhf' && '> Target: **SmartPi One** (AllWinner H3 — Cortex-A7 — ARMv7 32-bit)' || '> Target: **SmartPi 4** (AllWinner H618 — Cortex-A53 — ARMv8 64-bit)' }}
 
             ## Package groups
 
             | Package | Contents |
             |---------|----------|
-            | `packages-retroarch-armhf.tar.gz` | RetroArch frontend + assets |
-            | `packages-arcade-armhf.tar.gz` | FinalBurn Neo (lr-fbneo) |
-            | `packages-arcade-compat-armhf.tar.gz` | MAME 2003+, MAME 2000, FBA 2012 |
-            | `packages-nintendo-armhf.tar.gz` | NES (fceumm, nestopia, mesen, quicknes), SNES (snes9x2010), GB/GBC (gambatte, tgbdual), GBA (mgba, gpsp, vba-next) |
-            | `packages-n64-armhf.tar.gz` | N64 (mupen64plus, mupen64plus-next), PC Engine (beetle-pce-fast) |
-            | `packages-sega-armhf.tar.gz` | Genesis/MD/CD (genesis-plus-gx), Sega CD/32X (picodrive) |
-            | `packages-sony-armhf.tar.gz` | PS1 (pcsx-rearmed, beetle-psx) |
-            | `packages-psp-armhf.tar.gz` | PSP (ppsspp) |
-            | `packages-misc-armhf.tar.gz` | Doom, Quake, Cave Story, Atari 2600, Pico-8 (fake08), WASM-4, EasyRPG, ONScripter, FreeJ2ME |
-            | `packages-portables-armhf.tar.gz` | Neo Geo Pocket, Atari Lynx, Virtual Boy, Pokemon Mini, Game & Watch, Atari 7800, Odyssey², Vectrex, Fairchild, Mega Duck, Watara Supervision, Uzebox, Arduboy |
-            | `packages-computers-armhf.tar.gz` | C64 (vice), MSX (bluemsx), Atari 8-bit (atari800), Amstrad CPC (caprice32), ZX Spectrum (fuse), ZX81, Thomson (theodore), Apple II (applewin), BBC Micro (b2) |
-            | `packages-amiga-armhf.tar.gz` | Amiga (uae4arm) |
-            | `packages-heavy-armhf.tar.gz` | Nintendo DS (desmume2015), Dreamcast (flycast), Saturn (yabause, kronos, beetle-saturn) |
+            | `packages-retroarch-${{ inputs.arch }}.tar.gz` | RetroArch frontend + assets |
+            | `packages-arcade-${{ inputs.arch }}.tar.gz` | FinalBurn Neo (lr-fbneo) |
+            | `packages-arcade-compat-${{ inputs.arch }}.tar.gz` | MAME 2003+, MAME 2000, FBA 2012 |
+            | `packages-nintendo-${{ inputs.arch }}.tar.gz` | NES, SNES, GB/GBC, GBA |
+            | `packages-n64-${{ inputs.arch }}.tar.gz` | N64, PC Engine |
+            | `packages-sega-${{ inputs.arch }}.tar.gz` | Genesis/MD/CD, Sega CD/32X |
+            | `packages-sony-${{ inputs.arch }}.tar.gz` | PS1 |
+            | `packages-psp-${{ inputs.arch }}.tar.gz` | PSP |
+            | `packages-misc-${{ inputs.arch }}.tar.gz` | Doom, Quake, Cave Story, Pico-8, WASM-4, EasyRPG |
+            | `packages-portables-${{ inputs.arch }}.tar.gz` | NGP, Lynx, VB, Pokemon Mini, Arduboy... |
+            | `packages-computers-${{ inputs.arch }}.tar.gz` | C64, MSX, Atari, CPC, ZX Spectrum, Apple II, BBC Micro |
+            | `packages-amiga-${{ inputs.arch }}.tar.gz` | Amiga (uae4arm/puae) |
+            | `packages-japan-computers-${{ inputs.arch }}.tar.gz` | PC-98, PC-88, X68000, Sharp X1 |
+            | `packages-heavy-${{ inputs.arch }}.tar.gz` | DS, Dreamcast, Saturn, 3DO, Jaguar |
 
-            > ⚠️ Packages in `heavy` and `psp` may run too slowly on SmartPi One (H3 armhf). Included for completeness.
-
-            Built from [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup) on Debian Bookworm (armhf).
+            Built from [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup) on Debian Bookworm.
           files: artifacts/**/*.tar.gz
           draft: false
           fail_on_unmatched_files: true
+
