@@ -14,3 +14,8 @@ lr-vecx
 lr-freechaf
 lr-freeintv
 lr-handy
+# Portables additionnels (Mega Duck, Supervision, Uzebox, Arduboy)
+lr-sameduck
+lr-potator
+lr-uzem
+lr-ardens

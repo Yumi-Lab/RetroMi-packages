@@ -11,3 +11,10 @@ lr-retro8
 lr-xrick
 lr-dinothawr
 lr-tic80
+# Fantasy consoles & moteurs de jeu
+lr-fake08
+lr-wasm4
+lr-easyrpg
+# Visual novels & jeux mobiles
+lr-onscripter
+lr-freej2me

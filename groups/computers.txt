@@ -8,3 +8,6 @@ lr-fuse
 lr-81
 lr-theodore
 lr-hatari
+# Ordinateurs additionnels (Apple II, BBC Micro)
+lr-applewin
+lr-b2

@@ -107,9 +107,9 @@ jobs:
             | `packages-sega-armhf.tar.gz` | Genesis/MD/CD (genesis-plus-gx), Sega CD/32X (picodrive) |
             | `packages-sony-armhf.tar.gz` | PS1 (pcsx-rearmed, beetle-psx) |
             | `packages-psp-armhf.tar.gz` | PSP (ppsspp) |
-            | `packages-misc-armhf.tar.gz` | Doom, Quake, Cave Story, ScummVM, DOS, Atari 2600, SMS/GG |
-            | `packages-portables-armhf.tar.gz` | Neo Geo Pocket, Atari Lynx, Virtual Boy, Pokemon Mini, Game & Watch, Atari 7800, Odyssey², Vectrex, Fairchild |
-            | `packages-computers-armhf.tar.gz` | C64 (vice), MSX (bluemsx), Atari 8-bit (atari800), Amstrad CPC (caprice32), ZX Spectrum (fuse), ZX81, Thomson (theodore) |
+            | `packages-misc-armhf.tar.gz` | Doom, Quake, Cave Story, Atari 2600, Pico-8 (fake08), WASM-4, EasyRPG, ONScripter, FreeJ2ME |
+            | `packages-portables-armhf.tar.gz` | Neo Geo Pocket, Atari Lynx, Virtual Boy, Pokemon Mini, Game & Watch, Atari 7800, Odyssey², Vectrex, Fairchild, Mega Duck, Watara Supervision, Uzebox, Arduboy |
+            | `packages-computers-armhf.tar.gz` | C64 (vice), MSX (bluemsx), Atari 8-bit (atari800), Amstrad CPC (caprice32), ZX Spectrum (fuse), ZX81, Thomson (theodore), Apple II (applewin), BBC Micro (b2) |
             | `packages-amiga-armhf.tar.gz` | Amiga (uae4arm) |
             | `packages-heavy-armhf.tar.gz` | Nintendo DS (desmume2015), Dreamcast (flycast), Saturn (yabause, kronos, beetle-saturn) |
 

@@ -18,11 +18,11 @@ All 16 groups build **in parallel** → total wall time ≈ longest group.
 | `sega` | lr-genesis-plus-gx, lr-picodrive, lr-gearsystem, lr-neocd | Mega Drive / Sega CD / 32X / Master System / Game Gear / Neo Geo CD |
 | `sony` | lr-pcsx-rearmed, lr-beetle-psx | PlayStation 1 |
 | `psp` | lr-ppsspp | PlayStation Portable |
-| `misc` | lr-prboom, lr-tyrquake, lr-nxengine, lr-stella2014, lr-stella, lr-smsplus-gx, lr-dosbox, lr-mrboom, lr-retro8, lr-xrick, lr-dinothawr, lr-tic80 | Doom / Quake / Cave Story / Atari 2600 / DOS / divers |
+| `misc` | lr-prboom, lr-tyrquake, lr-nxengine, lr-stella2014, lr-stella, lr-smsplus-gx, lr-dosbox, lr-mrboom, lr-retro8, lr-xrick, lr-dinothawr, lr-tic80, lr-fake08, lr-wasm4, lr-easyrpg, lr-onscripter, lr-freej2me | Doom / Quake / Cave Story / Atari 2600 / DOS / Pico-8 / WASM-4 / EasyRPG / Visual novels / Java games |
 | `scummvm` | lr-scummvm | ScummVM (point & click adventures) |
 | `dosbox` | lr-dosbox-pure | DOS (DOSBox Pure) |
-| `portables` | lr-beetle-ngp, lr-beetle-lynx, lr-beetle-vb, lr-beetle-wswan, lr-beetle-supergrafx, lr-beetle-pce, lr-beetle-pcfx, lr-pokemini, lr-gw, lr-prosystem, lr-o2em, lr-vecx, lr-freechaf, lr-freeintv, lr-handy | Neo Geo Pocket / Lynx / Virtual Boy / WonderSwan / PC Engine / Pokémon Mini / Game & Watch / Atari 7800 / Odyssey² / Vectrex / Fairchild / Intellivision |
-| `computers` | lr-vice, lr-bluemsx, lr-fmsx, lr-atari800, lr-caprice32, lr-fuse, lr-81, lr-theodore, lr-hatari | C64 / MSX / Atari 8-bit / Amstrad CPC / ZX Spectrum / ZX81 / Thomson MO/TO / Atari ST |
+| `portables` | lr-beetle-ngp, lr-beetle-lynx, lr-beetle-vb, lr-beetle-wswan, lr-beetle-supergrafx, lr-beetle-pce, lr-beetle-pcfx, lr-pokemini, lr-gw, lr-prosystem, lr-o2em, lr-vecx, lr-freechaf, lr-freeintv, lr-handy, lr-sameduck, lr-potator, lr-uzem, lr-ardens | Neo Geo Pocket / Lynx / Virtual Boy / WonderSwan / PC Engine / Pokémon Mini / Game & Watch / Atari 7800 / Odyssey² / Vectrex / Fairchild / Intellivision / Mega Duck / Supervision / Uzebox / Arduboy |
+| `computers` | lr-vice, lr-bluemsx, lr-fmsx, lr-atari800, lr-caprice32, lr-fuse, lr-81, lr-theodore, lr-hatari, lr-applewin, lr-b2 | C64 / MSX / Atari 8-bit / Amstrad CPC / ZX Spectrum / ZX81 / Thomson MO/TO / Atari ST / Apple II / BBC Micro |
 | `amiga` | lr-uae4arm, lr-puae, lr-puae2021 | Amiga |
 | `japan-computers` | lr-np2kai, lr-quasi88, lr-px68k, lr-x1 | PC-98 / PC-88 / X68000 / Sharp X1 |
 | `heavy` | lr-desmume2015, lr-desmume, lr-flycast, lr-flycast-dev, lr-yabause, lr-kronos, lr-beetle-saturn, lr-opera, lr-virtualjaguar | Nintendo DS / Dreamcast / Sega Saturn / 3DO / Atari Jaguar |
