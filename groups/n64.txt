@@ -3,5 +3,6 @@
 lr-mupen64plus
 lr-mupen64plus-next
 lr-parallel-n64
-# PC Engine / TurboGrafx-16
+# PC Engine / TurboGrafx-16 / SuperGrafx
 lr-beetle-pce-fast
+lr-geargrafx

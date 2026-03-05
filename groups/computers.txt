@@ -11,3 +11,5 @@ lr-hatari
 # Ordinateurs additionnels (Apple II, BBC Micro)
 lr-applewin
 lr-b2
+# Europe de l'Est (Enterprise 128, Videoton TVC hongrois)
+lr-ep128emu
