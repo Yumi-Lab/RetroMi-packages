@@ -23,7 +23,7 @@ concurrency:
 jobs:
   build:
     runs-on: ${{ matrix.group == 'scummvm' && inputs.arch == 'armhf' && 'self-hosted' || 'ubuntu-latest' }}
-    timeout-minutes: ${{ matrix.group == 'scummvm' && inputs.arch == 'armhf' && 1000 || 360 }}
+    timeout-minutes: ${{ matrix.group == 'scummvm' && inputs.arch == 'armhf' && 14400 || 360 }}
     strategy:
       fail-fast: false
       matrix:
