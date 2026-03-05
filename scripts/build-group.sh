@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-#### RetroMi Packages — Build a group of emulator cores inside Debian Bookworm armhf
-# Runs inside: docker run --platform linux/arm/v7 debian:bookworm
+#### RetroMi Packages — Build a group of emulator cores inside Debian Bookworm
+# Runs inside: docker run --platform linux/arm/v7|linux/arm64 debian:bookworm
 # Usage: build-group.sh <group>
+# Env:   ARCH=armhf|arm64  (injected by docker run -e)
 
 set -Ee
 
 GROUP="${1:?Usage: $0 <group>}"
+ARCH="${ARCH:-armhf}"
 PACKAGES_FILE="/groups/${GROUP}.txt"
 OUTPUT_DIR="/output"
 
@@ -17,7 +19,7 @@ fi
 mkdir -p "${OUTPUT_DIR}"
 
 echo "================================================================"
-echo " RetroMi-packages | group: ${GROUP} | arch: $(uname -m)"
+echo " RetroMi-packages | group: ${GROUP} | arch: $(uname -m) [${ARCH}]"
 echo "================================================================"
 
 # Base system dependencies needed by RetroPie build scripts
@@ -82,10 +84,11 @@ if [[ ! -d /opt/retropie ]]; then
     exit 1
 fi
 
-tar -czf "${OUTPUT_DIR}/packages-${GROUP}-armhf.tar.gz" -C / opt/retropie/
+tar -czf "${OUTPUT_DIR}/packages-${GROUP}-${ARCH}.tar.gz" -C / opt/retropie/
 
-echo "Created: ${OUTPUT_DIR}/packages-${GROUP}-armhf.tar.gz"
+echo "Created: ${OUTPUT_DIR}/packages-${GROUP}-${ARCH}.tar.gz"
 ls -lh "${OUTPUT_DIR}/"
 
 echo ""
-echo "=== Done: group ${GROUP} ==="
+echo "=== Done: group ${GROUP} | arch: ${ARCH} ==="
+
