@@ -57,6 +57,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cleanup orphaned Docker containers
+        if: matrix.group == 'scummvm' && inputs.arch == 'armhf'
+        run: |
+          docker ps -q | xargs -r docker kill || true
+          docker container prune -f || true
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -132,4 +138,3 @@ jobs:
           files: artifacts/**/*.tar.gz
           draft: false
           fail_on_unmatched_files: true
-
