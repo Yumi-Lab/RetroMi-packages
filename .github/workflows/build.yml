@@ -22,8 +22,18 @@ concurrency:
 
 jobs:
   build:
-    runs-on: ${{ matrix.group == 'scummvm' && inputs.arch == 'armhf' && 'self-hosted' || 'ubuntu-latest' }}
-    timeout-minutes: ${{ matrix.group == 'scummvm' && inputs.arch == 'armhf' && 14400 || 360 }}
+    runs-on: >-
+      ${{
+        (matrix.group == 'emulationstation' && inputs.arch == 'armhf') && 'yumi-fr' ||
+        (matrix.group == 'scummvm' && inputs.arch == 'armhf') && 'yumi-lab' ||
+        'ubuntu-latest'
+      }}
+    timeout-minutes: >-
+      ${{
+        (matrix.group == 'scummvm' && inputs.arch == 'armhf') && 14400 ||
+        (matrix.group == 'emulationstation' && inputs.arch == 'armhf') && 480 ||
+        360
+      }}
     strategy:
       fail-fast: false
       matrix:
@@ -60,12 +70,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Cleanup orphaned Docker containers
-        if: matrix.group == 'scummvm' && inputs.arch == 'armhf'
+        if: (matrix.group == 'scummvm' || matrix.group == 'emulationstation') && inputs.arch == 'armhf'
         run: |
           docker ps -q | xargs -r docker kill || true
           docker container prune -f || true
 
       - name: Set up QEMU
+        if: "!(matrix.group == 'emulationstation' && inputs.arch == 'armhf')"
         uses: docker/setup-qemu-action@v3
         with:
           platforms: ${{ inputs.arch == 'armhf' && 'linux/arm/v7' || 'linux/arm64' }}
