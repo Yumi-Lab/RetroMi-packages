@@ -44,6 +44,13 @@ git clone --depth=1 -b master \
     /home/pi/RetroPie-Setup
 chown -R pi:pi /home/pi/RetroPie-Setup
 
+# Force platform for QEMU builds (prevents -march=native on x86 host)
+if [[ "${ARCH}" == "armhf" ]]; then
+    export __platform="armv7-mali"
+elif [[ "${ARCH}" == "arm64" ]]; then
+    export __platform="aarch64"
+fi
+
 # Install each package listed in the group file
 cd /home/pi/RetroPie-Setup
 
