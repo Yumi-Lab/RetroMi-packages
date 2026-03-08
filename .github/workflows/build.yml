@@ -52,6 +52,8 @@ jobs:
           - japan-computers
           # Lourds (DS, Dreamcast, Saturn, 3DO, Jaguar)
           - heavy
+          # Frontend
+          - emulationstation
 
     steps:
       - name: Checkout repository
@@ -133,6 +135,7 @@ jobs:
             | `packages-amiga-${{ inputs.arch }}.tar.gz` | Amiga (uae4arm/puae) |
             | `packages-japan-computers-${{ inputs.arch }}.tar.gz` | PC-98, PC-88, X68000, Sharp X1 |
             | `packages-heavy-${{ inputs.arch }}.tar.gz` | DS, Dreamcast, Saturn, 3DO, Jaguar |
+            | `packages-emulationstation-${{ inputs.arch }}.tar.gz` | EmulationStation frontend |
 
             Built from [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup) on Debian Bookworm.
           files: artifacts/**/*.tar.gz

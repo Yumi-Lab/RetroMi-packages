@@ -1,0 +1,2 @@
+# EmulationStation frontend (RetroPie supplementary)
+emulationstation
