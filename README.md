@@ -160,6 +160,80 @@ Actions → Build RetroMi Packages → Run workflow → version: X.Y.Z
 4. Each job produces `packages-<group>-armhf.tar.gz` containing `/opt/retropie/`
 5. A final job collects all artifacts and creates a GitHub Release
 
+## TODO — Packages not yet built
+
+Available in [YUMI-RETROPIE](https://github.com/Yumi-Lab/YUMI-RETROPIE) but not yet included in any build group.
+
+### Libretro cores
+
+| Package | System | Status | Notes |
+|---------|--------|--------|-------|
+| `lr-mame2015` | Arcade (MAME 2015) | 🟡 to add | Intermediate MAME — long compile |
+| `lr-mame2016` | Arcade (MAME 2016) | 🟡 to add | Intermediate MAME — long compile |
+| `lr-mame` | Arcade (MAME current) | 🔴 deferred | 48h+ compile time on QEMU |
+| `lr-mess` | Multi-system (MESS) | 🔴 deferred | MAME derivative — very long compile |
+| `lr-mess2016` | Multi-system (MESS 2016) | 🔴 deferred | MAME derivative — very long compile |
+| `lr-bsnes` | SNES (high accuracy) | 🔴 excluded | Too heavy for H3 Cortex-A7 |
+| `lr-dolphin` | GameCube / Wii | 🔴 excluded | Impossible on ARMv7 — requires x86/arm64 |
+| `lr-superflappybirds` | Demo game | ⚪ skipped | Not an emulator — demo/test only |
+| `lr-geargrafx` | PC Engine | 🟡 to add | Missing from n64 group description |
+
+### Standalone ports
+
+| Package | Game | Status | Notes |
+|---------|------|--------|-------|
+| `sdlpop` | Prince of Persia | 🟡 to add | Lightweight SDL — perfect for H3 |
+| `opentyrian` | Tyrian | 🟡 to add | Lightweight — runs well on ARM |
+| `cannonball` | OutRun (engine reimpl.) | 🟡 to add | Lightweight SDL |
+| `cdogs-sdl` | C-Dogs SDL | 🟡 to add | Top-down shooter |
+| `digger` | Digger | 🟡 to add | Very lightweight classic |
+| `smw` | Super Mario War | 🟡 to add | Multiplayer party game |
+| `vvvvvv` | VVVVVV | 🟡 to add | Indie platformer |
+| `xrick` | Rick Dangerous | 🟡 to add | Already have lr-xrick — standalone version |
+| `jumpnbump` | Jump 'n Bump | 🟡 to add | Multiplayer party game |
+| `openblok` | Tetris clone | 🟡 to add | Lightweight puzzle |
+| `giana` | Great Giana Sisters | 🟡 to add | Classic platformer |
+| `cgenius` | Commander Keen | 🟡 to add | Keen engine reimpl. |
+| `mysticmine` | Mystic Mine | 🟡 to add | Puzzle game |
+| `wolf4sdl` | Wolfenstein 3D | 🟡 to add | Classic FPS |
+| `splitwolf` | Wolfenstein 3D (split) | 🟡 to add | Splitscreen Wolfenstein |
+| `tyrquake` | Quake (standalone) | 🟡 to add | Already have lr-tyrquake |
+| `dxx-rebirth` | Descent I & II | 🟡 to add | FPS — may be heavy on H3 |
+| `uqm` | Star Control II | 🟡 to add | Space adventure |
+| `lincity-ng` | SimCity clone | 🟡 to add | City builder |
+| `micropolis` | Micropolis (SimCity) | 🟡 to add | Original SimCity open source |
+| `openttd` | Transport Tycoon | 🟡 to add | Strategy — may need good CPU |
+| `solarus` | Zelda-like engine | 🟡 to add | Action RPG engine |
+| `supertux` | Super Tux | 🟡 to add | Mario-like platformer |
+| `bombermaaan` | Bomberman clone | 🟡 to add | Multiplayer — perfect for retro box |
+| `dsda-doom` | DSDA-Doom | 🟡 to add | Modern Doom source port |
+| `darkplaces-quake` | Quake (DarkPlaces) | 🟡 to add | Enhanced Quake engine |
+| `yquake2` | Quake II | 🟡 to add | Quake II — may be heavy on H3 |
+| `ioquake3` | Quake III Arena | 🔴 deferred | Heavy — requires OpenGL, risky on Mali-400 |
+| `quake3` | Quake III | 🔴 deferred | Same as ioquake3 |
+| `eduke32` | Duke Nukem 3D | 🟡 to add | Classic FPS — SDL |
+| `alephone` | Marathon (Bungie) | 🟡 to add | FPS trilogy |
+| `gemrb` | Baldur's Gate engine | 🔴 deferred | Heavy RPG engine — may not run on H3 |
+| `gzdoom` | GZDoom | 🔴 deferred | OpenGL Doom — Mali-400 compatibility unknown |
+| `lzdoom` | LZDoom | 🟡 to add | Software-rendered Doom — better H3 compat |
+| `ionfury` | Ion Fury | 🔴 deferred | Build engine — commercial game |
+| `love` | LÖVE 2D engine | 🟡 to add | 2D game framework |
+| `love-0.10.2` | LÖVE 0.10.2 | 🟡 to add | Legacy LÖVE version |
+| `srb2` | Sonic Robo Blast 2 | 🔴 deferred | Heavy 3D — unlikely on H3 |
+| `kodi` | Kodi Media Center | 🔴 deferred | Not a game — heavy, separate use case |
+| `steamlink` | Steam Link | 🔴 excluded | Requires Steam infrastructure |
+| `minecraft` | Minecraft | 🔴 excluded | Requires Java + heavy 3D |
+| `openpht` | Plex Home Theater | 🔴 excluded | Not a game — media player |
+
+### Legend
+
+- 🟡 **to add** — realistic for H3, should be added to a build group
+- 🔴 **deferred** — too heavy, risky, or impractical for H3 currently
+- 🔴 **excluded** — not compatible or not relevant for RetroMi
+- ⚪ **skipped** — not useful
+
+---
+
 ## Usage in RetroMi
 
 The `retropie` module in RetroMi downloads and extracts these packages automatically.
