@@ -36,11 +36,11 @@ apt-get install -y --no-install-recommends \
 id -u pi &>/dev/null || useradd -m -s /bin/bash pi
 echo "pi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Clone Yumi-Lab/YUMI-RETROPIE (our fork of RetroPie-Setup — includes custom patches)
+# Clone Yumi-Lab/RetroPie-Setup yumi-armhf branch (official fork — armhf/Mali-400 custom patches)
 echo ""
-echo "=== Cloning Yumi-Lab/YUMI-RETROPIE ==="
-git clone --depth=1 -b main \
-    https://github.com/Yumi-Lab/YUMI-RETROPIE.git \
+echo "=== Cloning Yumi-Lab/RetroPie-Setup (yumi-armhf branch) ==="
+git clone --depth=1 -b yumi-armhf \
+    https://github.com/Yumi-Lab/RetroPie-Setup.git \
     /home/pi/RetroPie-Setup
 chown -R pi:pi /home/pi/RetroPie-Setup
 
