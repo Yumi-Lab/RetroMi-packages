@@ -36,11 +36,11 @@ apt-get install -y --no-install-recommends \
 id -u pi &>/dev/null || useradd -m -s /bin/bash pi
 echo "pi ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Clone Yumi-Lab/RetroPie-Setup (fork of official RetroPie/RetroPie-Setup)
+# Clone Yumi-Lab/YUMI-RETROPIE (our fork of RetroPie-Setup — includes custom patches)
 echo ""
-echo "=== Cloning Yumi-Lab/RetroPie-Setup ==="
-git clone --depth=1 -b master \
-    https://github.com/Yumi-Lab/RetroPie-Setup.git \
+echo "=== Cloning Yumi-Lab/YUMI-RETROPIE ==="
+git clone --depth=1 -b main \
+    https://github.com/Yumi-Lab/YUMI-RETROPIE.git \
     /home/pi/RetroPie-Setup
 chown -R pi:pi /home/pi/RetroPie-Setup
 

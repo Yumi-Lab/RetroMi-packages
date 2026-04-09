@@ -1,0 +1,2 @@
+# OpenBOR — Beat 'em Up game engine (SDL-only, NO_GL=1)
+openbor

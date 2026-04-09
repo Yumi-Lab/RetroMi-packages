@@ -43,6 +43,7 @@ jobs:
           - psp
           # Divers (split: ports légers + ScummVM seul + DosBox seul + portables)
           - misc
+          - openbor
           - scummvm
           - dosbox
           - portables
@@ -130,6 +131,7 @@ jobs:
             | `packages-sony-${{ inputs.arch }}.tar.gz` | PS1 |
             | `packages-psp-${{ inputs.arch }}.tar.gz` | PSP |
             | `packages-misc-${{ inputs.arch }}.tar.gz` | Doom, Quake, Cave Story, Pico-8, WASM-4, EasyRPG |
+            | `packages-openbor-${{ inputs.arch }}.tar.gz` | OpenBOR (Beat 'em Up engine) |
             | `packages-portables-${{ inputs.arch }}.tar.gz` | NGP, Lynx, VB, Pokemon Mini, Arduboy... |
             | `packages-computers-${{ inputs.arch }}.tar.gz` | C64, MSX, Atari, CPC, ZX Spectrum, Apple II, BBC Micro |
             | `packages-amiga-${{ inputs.arch }}.tar.gz` | Amiga (uae4arm/puae) |
@@ -137,7 +139,7 @@ jobs:
             | `packages-heavy-${{ inputs.arch }}.tar.gz` | DS, Dreamcast, Saturn, 3DO, Jaguar |
             | `packages-emulationstation-${{ inputs.arch }}.tar.gz` | EmulationStation frontend |
 
-            Built from [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup) on Debian Bookworm.
+            Built from [Yumi-Lab/YUMI-RETROPIE](https://github.com/Yumi-Lab/YUMI-RETROPIE) on Debian Bookworm.
           files: artifacts/**/*.tar.gz
           draft: false
           fail_on_unmatched_files: true
