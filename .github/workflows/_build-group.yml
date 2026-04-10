@@ -1,0 +1,73 @@
+name: _build-group (reusable)
+
+on:
+  workflow_call:
+    inputs:
+      group:
+        description: 'Package group name'
+        required: true
+        type: string
+      version:
+        description: 'Package version'
+        required: true
+        type: string
+      arch:
+        description: 'Target architecture (armhf/arm64)'
+        required: true
+        type: string
+      distro:
+        description: 'Debian version'
+        required: false
+        type: string
+        default: 'bookworm'
+      runner:
+        description: 'Runner label'
+        required: false
+        type: string
+        default: 'ubuntu-latest'
+      timeout:
+        description: 'Timeout in minutes'
+        required: false
+        type: number
+        default: 360
+
+jobs:
+  build:
+    runs-on: ${{ inputs.runner }}
+    timeout-minutes: ${{ inputs.timeout }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cleanup orphaned Docker containers
+        if: inputs.runner != 'ubuntu-latest'
+        run: |
+          docker ps -q | xargs -r docker kill || true
+          docker container prune -f || true
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: ${{ inputs.arch == 'armhf' && 'linux/arm/v7' || 'linux/arm64' }}
+
+      - name: Create output directory
+        run: mkdir -p "${{ github.workspace }}/output"
+
+      - name: Build ${{ inputs.group }} (${{ inputs.arch }}/${{ inputs.distro }})
+        run: |
+          PLATFORM="${{ inputs.arch == 'armhf' && 'linux/arm/v7' || 'linux/arm64' }}"
+          docker run --platform "${PLATFORM}" --rm \
+            -e ARCH="${{ inputs.arch }}" \
+            -e DISTRO="${{ inputs.distro }}" \
+            -v "${{ github.workspace }}/scripts:/scripts:ro" \
+            -v "${{ github.workspace }}/groups:/groups:ro" \
+            -v "${{ github.workspace }}/output:/output" \
+            debian:${{ inputs.distro }} \
+            /bin/bash /scripts/build-group.sh "${{ inputs.group }}"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages-${{ inputs.group }}-${{ inputs.arch }}
+          path: output/packages-${{ inputs.group }}-${{ inputs.arch }}.tar.gz
+          if-no-files-found: error

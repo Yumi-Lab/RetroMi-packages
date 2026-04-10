@@ -1,0 +1,34 @@
+name: "Build: heavy"
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Package version'
+        required: true
+        default: '1.0.5'
+      arch:
+        description: 'Target architecture'
+        required: true
+        default: 'armhf'
+        type: choice
+        options: [armhf, arm64]
+      distro:
+        description: 'Debian version'
+        required: true
+        default: 'bookworm'
+        type: choice
+        options: [bookworm, trixie]
+
+concurrency:
+  group: build-heavy-${{ inputs.arch }}-${{ inputs.distro }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    uses: ./.github/workflows/_build-group.yml
+    with:
+      group: heavy
+      version: ${{ inputs.version }}
+      arch: ${{ inputs.arch }}
+      distro: ${{ inputs.distro }}
