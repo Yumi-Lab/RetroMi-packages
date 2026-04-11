@@ -42,7 +42,7 @@ jobs:
           MISSING=()
           RELEASE_NOTES="release-notes.md"
 
-          GROUPS="retroarch arcade arcade-compat nintendo n64 sega sony psp misc openbor scummvm dosbox portables computers amiga japan-computers heavy emulationstation"
+          PKG_GROUPS="retroarch arcade arcade-compat nintendo n64 sega sony psp misc openbor scummvm dosbox portables computers amiga japan-computers heavy emulationstation"
           GROUP_COUNT=18
 
           echo "## Package groups" > "${RELEASE_NOTES}"
@@ -52,7 +52,7 @@ jobs:
 
           TOTAL_PACKAGES=0
 
-          for group in ${GROUPS}; do
+          for group in ${PKG_GROUPS}; do
             WORKFLOW="build-${group}.yml"
             ARTIFACT="packages-${group}-${{ inputs.arch }}"
 
