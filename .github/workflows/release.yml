@@ -45,10 +45,31 @@ jobs:
           PKG_GROUPS="retroarch arcade arcade-compat nintendo n64 sega sony psp misc openbor scummvm dosbox portables computers amiga japan-computers heavy emulationstation"
           GROUP_COUNT=18
 
+          # Human-readable console names per group
+          declare -A GROUP_LABELS
+          GROUP_LABELS[retroarch]="RetroArch frontend + assets"
+          GROUP_LABELS[arcade]="Arcade / Neo Geo / CPS1-2-3 (FinalBurn Neo)"
+          GROUP_LABELS[arcade-compat]="Arcade compat (MAME 2003+, MAME 2000, MAME 2010, FBA 2012)"
+          GROUP_LABELS[nintendo]="NES, SNES, Game Boy, Game Boy Color, Game Boy Advance"
+          GROUP_LABELS[n64]="Nintendo 64, PC Engine / TurboGrafx-16"
+          GROUP_LABELS[sega]="Mega Drive / Genesis, Master System, Game Gear, Sega CD, 32X, Neo Geo CD"
+          GROUP_LABELS[sony]="PlayStation 1"
+          GROUP_LABELS[psp]="PlayStation Portable (PSP)"
+          GROUP_LABELS[misc]="Doom, Quake, Cave Story, Atari 2600, DOS, Pico-8, WASM-4, TIC-80, EasyRPG, Java ME"
+          GROUP_LABELS[openbor]="OpenBOR (Beat 'em Up engine)"
+          GROUP_LABELS[scummvm]="ScummVM (Point & Click adventures)"
+          GROUP_LABELS[dosbox]="DOS (DOSBox Pure)"
+          GROUP_LABELS[portables]="Neo Geo Pocket, Atari Lynx, Virtual Boy, WonderSwan, PC Engine SuperGrafx, PC-FX, Pokemon Mini, Game & Watch, Atari 7800, Odyssey 2, Vectrex, Fairchild Channel F, Intellivision, Mega Duck, Watara Supervision, Uzebox, Arduboy"
+          GROUP_LABELS[computers]="Commodore 64, MSX, Atari 800, Amstrad CPC, ZX Spectrum, ZX81, Thomson MO/TO, Atari ST, Apple II, BBC Micro, Enterprise 128"
+          GROUP_LABELS[amiga]="Amiga 500/1200 (uae4arm, PUAE)"
+          GROUP_LABELS[japan-computers]="PC-98, PC-88, Sharp X68000, Sharp X1"
+          GROUP_LABELS[heavy]="Nintendo DS, Sega Dreamcast, Sega Saturn, 3DO, Atari Jaguar"
+          GROUP_LABELS[emulationstation]="EmulationStation frontend"
+
           echo "## Package groups" > "${RELEASE_NOTES}"
           echo "" >> "${RELEASE_NOTES}"
-          echo "| Group | Packages | Built on |" >> "${RELEASE_NOTES}"
-          echo "|-------|----------|----------|" >> "${RELEASE_NOTES}"
+          echo "| Package | Contents | Cores | Built on |" >> "${RELEASE_NOTES}"
+          echo "|---------|----------|-------|----------|" >> "${RELEASE_NOTES}"
 
           TOTAL_PACKAGES=0
 
@@ -75,16 +96,16 @@ jobs:
               continue
             fi
 
-            PACKAGES=""
+            PKG_COUNT=0
             if [ -f "groups/${group}.txt" ]; then
-              PACKAGES=$(grep -v '^#' "groups/${group}.txt" | grep -v '^$' | tr '\n' ', ' | sed 's/,$//' | sed 's/,/, /g')
               PKG_COUNT=$(grep -v '^#' "groups/${group}.txt" | grep -v '^$' | wc -l | tr -d ' ')
               TOTAL_PACKAGES=$((TOTAL_PACKAGES + PKG_COUNT))
             fi
 
-            echo "  Run ID: ${RUN_ID} — ${RUN_DATE} — ${PACKAGES}"
+            LABEL="${GROUP_LABELS[${group}]}"
+            echo "  Run ID: ${RUN_ID} — ${RUN_DATE} — ${LABEL} (${PKG_COUNT})"
 
-            echo "| \`${group}\` | ${PACKAGES} | ${RUN_DATE} |" >> "${RELEASE_NOTES}"
+            echo "| \`packages-${group}-${{ inputs.arch }}.tar.gz\` | ${LABEL} | ${PKG_COUNT} | ${RUN_DATE} |" >> "${RELEASE_NOTES}"
 
             gh run download "${RUN_ID}" \
               --repo "${{ github.repository }}" \
@@ -97,7 +118,7 @@ jobs:
           done
 
           echo "" >> "${RELEASE_NOTES}"
-          echo "**Total: ${TOTAL_PACKAGES} packages** across ${GROUP_COUNT} groups." >> "${RELEASE_NOTES}"
+          echo "**Total: ${TOTAL_PACKAGES} emulator cores + engines** across ${GROUP_COUNT} groups." >> "${RELEASE_NOTES}"
 
           echo ""
           echo "=== Collection summary ==="
