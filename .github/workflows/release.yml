@@ -31,14 +31,30 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository (for group files)
+        uses: actions/checkout@v4
+
       - name: Collect artifacts from latest successful builds
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           mkdir -p artifacts
           MISSING=()
+          RELEASE_NOTES="release-notes.md"
 
           GROUPS="retroarch arcade arcade-compat nintendo n64 sega sony psp misc openbor scummvm dosbox portables computers amiga japan-computers heavy emulationstation"
+
+          # Header
+          cat > "${RELEASE_NOTES}" << 'HEADER'
+          ## Package groups
+
+          | Group | Packages | Built on |
+          |-------|----------|----------|
+          HEADER
+          # Remove leading spaces from heredoc
+          sed -i 's/^          //' "${RELEASE_NOTES}"
+
+          TOTAL_PACKAGES=0
 
           for group in ${GROUPS}; do
             WORKFLOW="build-${group}.yml"
@@ -46,14 +62,17 @@ jobs:
 
             echo "=== ${group} — searching latest successful run ==="
 
-            # Find latest successful run for this workflow
-            RUN_ID=$(gh run list \
+            # Find latest successful run with date
+            RUN_INFO=$(gh run list \
               --repo "${{ github.repository }}" \
               --workflow "${WORKFLOW}" \
               --status success \
               --limit 1 \
-              --json databaseId \
-              --jq '.[0].databaseId // empty')
+              --json databaseId,updatedAt \
+              --jq '.[0] // empty')
+
+            RUN_ID=$(echo "${RUN_INFO}" | jq -r '.databaseId // empty')
+            RUN_DATE=$(echo "${RUN_INFO}" | jq -r '.updatedAt // empty' | cut -d'T' -f1)
 
             if [ -z "${RUN_ID}" ]; then
               echo "WARNING: no successful run found for ${WORKFLOW}"
@@ -61,7 +80,19 @@ jobs:
               continue
             fi
 
-            echo "  Run ID: ${RUN_ID} — downloading ${ARTIFACT}"
+            # Read packages from group file
+            PACKAGES=""
+            if [ -f "groups/${group}.txt" ]; then
+              PACKAGES=$(grep -v '^#' "groups/${group}.txt" | grep -v '^$' | tr '\n' ', ' | sed 's/,$//' | sed 's/,/, /g')
+              PKG_COUNT=$(grep -v '^#' "groups/${group}.txt" | grep -v '^$' | wc -l | tr -d ' ')
+              TOTAL_PACKAGES=$((TOTAL_PACKAGES + PKG_COUNT))
+            fi
+
+            echo "  Run ID: ${RUN_ID} — ${RUN_DATE} — ${PACKAGES}"
+
+            # Add to release notes
+            echo "| \`${group}\` | ${PACKAGES} | ${RUN_DATE} |" >> "${RELEASE_NOTES}"
+
             gh run download "${RUN_ID}" \
               --repo "${{ github.repository }}" \
               --name "${ARTIFACT}" \
@@ -72,9 +103,19 @@ jobs:
               }
           done
 
+          # Footer
+          cat >> "${RELEASE_NOTES}" << EOF
+
+          **Total: ${TOTAL_PACKAGES} packages** across ${#GROUPS[@]} groups.
+          EOF
+          sed -i 's/^          //' "${RELEASE_NOTES}"
+
           echo ""
           echo "=== Collection summary ==="
           find artifacts/ -name "*.tar.gz" -ls
+          echo ""
+          echo "=== Release notes ==="
+          cat "${RELEASE_NOTES}"
           echo ""
 
           if [ ${#MISSING[@]} -gt 0 ]; then
@@ -85,40 +126,43 @@ jobs:
 
           echo "All 18 groups collected."
 
+      - name: Build full release body
+        id: body
+        run: |
+          ARCH="${{ inputs.arch }}"
+          DISTRO="${{ inputs.distro }}"
+
+          if [ "${ARCH}" = "armhf" ]; then
+            TARGET="> Target: **SmartPi One** (AllWinner H3 — Cortex-A7 — ARMv7 32-bit)"
+          else
+            TARGET="> Target: **SmartPi 4** (AllWinner H618 — Cortex-A53 — ARMv8 64-bit)"
+          fi
+
+          if [ "${DISTRO}" = "bookworm" ]; then
+            DISTRO_LABEL="12 (Bookworm)"
+          else
+            DISTRO_LABEL="13 (Trixie)"
+          fi
+
+          NOTES=$(cat release-notes.md)
+
+          cat > body.md << EOF
+          Pre-compiled RetroArch and libretro cores for **SmartPi** — \`${ARCH}\` / Debian ${DISTRO_LABEL}.
+
+          ${TARGET}
+
+          ${NOTES}
+
+          Built from [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup) on Debian ${DISTRO_LABEL}.
+          EOF
+          sed -i 's/^          //' body.md
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ inputs.version }}-${{ inputs.arch }}-${{ inputs.distro }}
           name: RetroMi Packages v${{ inputs.version }} (${{ inputs.arch }} / ${{ inputs.distro }})
-          body: |
-            Pre-compiled RetroArch and libretro cores for **SmartPi** — `${{ inputs.arch }}` / Debian ${{ inputs.distro == 'bookworm' && '12 (Bookworm)' || '13 (Trixie)' }}.
-
-            ${{ inputs.arch == 'armhf' && '> Target: **SmartPi One** (AllWinner H3 — Cortex-A7 — ARMv7 32-bit)' || '> Target: **SmartPi 4** (AllWinner H618 — Cortex-A53 — ARMv8 64-bit)' }}
-
-            ## Package groups
-
-            | Package | Contents |
-            |---------|----------|
-            | `packages-retroarch-${{ inputs.arch }}.tar.gz` | RetroArch frontend + assets |
-            | `packages-arcade-${{ inputs.arch }}.tar.gz` | FinalBurn Neo (lr-fbneo) |
-            | `packages-arcade-compat-${{ inputs.arch }}.tar.gz` | MAME 2003+, MAME 2000, FBA 2012 |
-            | `packages-nintendo-${{ inputs.arch }}.tar.gz` | NES, SNES, GB/GBC, GBA |
-            | `packages-n64-${{ inputs.arch }}.tar.gz` | N64, PC Engine |
-            | `packages-sega-${{ inputs.arch }}.tar.gz` | Genesis/MD/CD, Sega CD/32X |
-            | `packages-sony-${{ inputs.arch }}.tar.gz` | PS1 |
-            | `packages-psp-${{ inputs.arch }}.tar.gz` | PSP |
-            | `packages-misc-${{ inputs.arch }}.tar.gz` | Doom, Quake, Cave Story, Pico-8, WASM-4, EasyRPG |
-            | `packages-openbor-${{ inputs.arch }}.tar.gz` | OpenBOR (Beat 'em Up engine) |
-            | `packages-scummvm-${{ inputs.arch }}.tar.gz` | ScummVM |
-            | `packages-dosbox-${{ inputs.arch }}.tar.gz` | DOSBox Pure |
-            | `packages-portables-${{ inputs.arch }}.tar.gz` | NGP, Lynx, VB, Pokemon Mini, Arduboy... |
-            | `packages-computers-${{ inputs.arch }}.tar.gz` | C64, MSX, Atari, CPC, ZX Spectrum, Apple II, BBC Micro |
-            | `packages-amiga-${{ inputs.arch }}.tar.gz` | Amiga (uae4arm/puae) |
-            | `packages-japan-computers-${{ inputs.arch }}.tar.gz` | PC-98, PC-88, X68000, Sharp X1 |
-            | `packages-heavy-${{ inputs.arch }}.tar.gz` | DS, Dreamcast, Saturn, 3DO, Jaguar |
-            | `packages-emulationstation-${{ inputs.arch }}.tar.gz` | EmulationStation frontend |
-
-            Built from [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup) on Debian ${{ inputs.distro == 'bookworm' && '12 (Bookworm)' || '13 (Trixie)' }}.
+          body_path: body.md
           files: artifacts/**/*.tar.gz
           draft: false
           fail_on_unmatched_files: true
