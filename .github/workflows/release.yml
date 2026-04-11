@@ -43,16 +43,12 @@ jobs:
           RELEASE_NOTES="release-notes.md"
 
           GROUPS="retroarch arcade arcade-compat nintendo n64 sega sony psp misc openbor scummvm dosbox portables computers amiga japan-computers heavy emulationstation"
+          GROUP_COUNT=18
 
-          # Header
-          cat > "${RELEASE_NOTES}" << 'HEADER'
-          ## Package groups
-
-          | Group | Packages | Built on |
-          |-------|----------|----------|
-          HEADER
-          # Remove leading spaces from heredoc
-          sed -i 's/^          //' "${RELEASE_NOTES}"
+          echo "## Package groups" > "${RELEASE_NOTES}"
+          echo "" >> "${RELEASE_NOTES}"
+          echo "| Group | Packages | Built on |" >> "${RELEASE_NOTES}"
+          echo "|-------|----------|----------|" >> "${RELEASE_NOTES}"
 
           TOTAL_PACKAGES=0
 
@@ -62,14 +58,13 @@ jobs:
 
             echo "=== ${group} — searching latest successful run ==="
 
-            # Find latest successful run with date
             RUN_INFO=$(gh run list \
               --repo "${{ github.repository }}" \
               --workflow "${WORKFLOW}" \
               --status success \
               --limit 1 \
               --json databaseId,updatedAt \
-              --jq '.[0] // empty')
+              --jq '.[0] // empty') || true
 
             RUN_ID=$(echo "${RUN_INFO}" | jq -r '.databaseId // empty')
             RUN_DATE=$(echo "${RUN_INFO}" | jq -r '.updatedAt // empty' | cut -d'T' -f1)
@@ -80,7 +75,6 @@ jobs:
               continue
             fi
 
-            # Read packages from group file
             PACKAGES=""
             if [ -f "groups/${group}.txt" ]; then
               PACKAGES=$(grep -v '^#' "groups/${group}.txt" | grep -v '^$' | tr '\n' ', ' | sed 's/,$//' | sed 's/,/, /g')
@@ -90,7 +84,6 @@ jobs:
 
             echo "  Run ID: ${RUN_ID} — ${RUN_DATE} — ${PACKAGES}"
 
-            # Add to release notes
             echo "| \`${group}\` | ${PACKAGES} | ${RUN_DATE} |" >> "${RELEASE_NOTES}"
 
             gh run download "${RUN_ID}" \
@@ -103,12 +96,8 @@ jobs:
               }
           done
 
-          # Footer
-          cat >> "${RELEASE_NOTES}" << EOF
-
-          **Total: ${TOTAL_PACKAGES} packages** across ${#GROUPS[@]} groups.
-          EOF
-          sed -i 's/^          //' "${RELEASE_NOTES}"
+          echo "" >> "${RELEASE_NOTES}"
+          echo "**Total: ${TOTAL_PACKAGES} packages** across ${GROUP_COUNT} groups." >> "${RELEASE_NOTES}"
 
           echo ""
           echo "=== Collection summary ==="
@@ -146,16 +135,15 @@ jobs:
 
           NOTES=$(cat release-notes.md)
 
-          cat > body.md << EOF
-          Pre-compiled RetroArch and libretro cores for **SmartPi** — \`${ARCH}\` / Debian ${DISTRO_LABEL}.
-
-          ${TARGET}
-
-          ${NOTES}
-
-          Built from [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup) on Debian ${DISTRO_LABEL}.
-          EOF
-          sed -i 's/^          //' body.md
+          {
+            echo "Pre-compiled RetroArch and libretro cores for **SmartPi** — \`${ARCH}\` / Debian ${DISTRO_LABEL}."
+            echo ""
+            echo "${TARGET}"
+            echo ""
+            echo "${NOTES}"
+            echo ""
+            echo "Built from [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup) on Debian ${DISTRO_LABEL}."
+          } > body.md
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
