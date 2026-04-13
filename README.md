@@ -10,7 +10,7 @@ All 19 groups build **in parallel** → total wall time ≈ longest group.
 
 | Group | Packages | Systems |
 |-------|----------|---------|
-| `retroarch` | RetroArch + assets | Frontend |
+| `retroarch` | RetroArch + SDL2 + assets | Frontend + display engine (KMS/EGL, no mali fbdev) |
 | `arcade` | lr-fbneo | Arcade / Neo Geo / CPS1-2-3 |
 | `arcade-compat` | lr-mame2003-plus, lr-mame2003, lr-mame2000, lr-mame2010, lr-fbalpha2012 | Arcade (MAME compat) |
 | `nintendo` | lr-fceumm, lr-nestopia, lr-mesen, lr-quicknes, lr-snes9x2010, lr-snes9x, lr-snes9x2005, lr-snes9x2002, lr-gambatte, lr-tgbdual, lr-mgba, lr-gpsp, lr-vba-next | NES / SNES / GB / GBC / GBA |
@@ -142,7 +142,7 @@ All 19 groups build **in parallel** → total wall time ≈ longest group.
 
 - **Target**: ARMv7 32-bit (armhf) — Debian Bookworm
 - **Build environment**: Docker `debian:bookworm` with QEMU `linux/arm/v7` emulation
-- **RetroPie layer**: [Yumi-Lab/YUMI-RETROPIE](https://github.com/Yumi-Lab/YUMI-RETROPIE) (fork of RetroPie-Setup)
+- **RetroPie layer**: [Yumi-Lab/RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup/tree/yumi-armhf) (`yumi-armhf` branch — Lima/Panfrost KMS detection)
 
 ## Building
 
@@ -156,13 +156,13 @@ Actions → Build RetroMi Packages → Run workflow → version: X.Y.Z
 
 1. GitHub Actions launches 19 parallel jobs (one per group)
 2. Each job runs inside a `debian:bookworm --platform linux/arm/v7` Docker container
-3. Inside the container, YUMI-RETROPIE scripts compile the emulators natively for armhf
+3. Inside the container, RetroPie-Setup (yumi-armhf) scripts compile the emulators natively for armhf
 4. Each job produces `packages-<group>-armhf.tar.gz` containing `/opt/retropie/`
 5. A final job collects all artifacts and creates a GitHub Release
 
 ## TODO — Packages not yet built
 
-Available in [YUMI-RETROPIE](https://github.com/Yumi-Lab/YUMI-RETROPIE) but not yet included in any build group.
+Available in [RetroPie-Setup](https://github.com/Yumi-Lab/RetroPie-Setup/tree/yumi-armhf) but not yet included in any build group.
 
 ### Libretro cores
 
