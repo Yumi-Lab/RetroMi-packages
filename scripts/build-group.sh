@@ -45,15 +45,9 @@ git clone --depth=1 -b yumi-armhf \
     /home/pi/RetroPie-Setup
 chown -R pi:pi /home/pi/RetroPie-Setup
 
-# Patch mali fbdev for QEMU builds (Lima/Armbian uses EGL/KMS, not mali fbdev).
-# On real hardware, RetroPie-Setup detects Lima/Panfrost via /sys/module and skips
-# these flags automatically. In QEMU /sys is unavailable, so we patch explicitly.
-#
-# 1) Remove ALL mali-fbdev references (depends + configure flags) from both scripts
-sed -i '/mali-fbdev/d'        /home/pi/RetroPie-Setup/scriptmodules/emulators/retroarch.sh
-sed -i '/enable-mali_fbdev/d' /home/pi/RetroPie-Setup/scriptmodules/emulators/retroarch.sh
-sed -i '/mali-fbdev/d'        /home/pi/RetroPie-Setup/scriptmodules/supplementary/sdl2.sh
-sed -i '/enable-video-mali/d' /home/pi/RetroPie-Setup/scriptmodules/supplementary/sdl2.sh
+# No mali patches needed — RetroPie-Setup yumi-armhf detects mali-fbdev availability
+# via apt-cache. When mali-fbdev is absent (Armbian/Lima, QEMU, Docker), it adds
+# kms+mesa flags automatically → sdl2.sh and retroarch.sh skip mali fbdev.
 
 # Force platform for QEMU builds (prevents -march=native on x86 host)
 if [[ "${ARCH}" == "armhf" ]]; then
