@@ -72,7 +72,9 @@ while IFS= read -r pkg; do
     echo "================================================================"
 
     # Run as root but tell RetroPie to install for user 'pi' via __user
-    if ! __user=pi bash retropie_packages.sh "${pkg}"; then
+    # Force _source_ mode — compile from source, never download prebuilt binaries
+    # (RetroPie binaries are built for RPi, not SmartPi/H3)
+    if ! __user=pi bash retropie_packages.sh "${pkg}" _source_; then
         echo "WARNING: ${pkg} installation failed, continuing..."
         FAILED_PKGS+=("${pkg}")
     fi
