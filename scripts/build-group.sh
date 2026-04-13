@@ -30,7 +30,8 @@ apt-get install -y --no-install-recommends \
     libsdl2-dev libsdl2-gfx-1.0-0 libsdl2-mixer-2.0-0 \
     libsdl2-net-2.0-0 libsdl2-ttf-2.0-0 libsdl2-image-2.0-0 \
     libusb-1.0-0-dev libavformat-dev libavdevice-dev \
-    xmlstarlet joystick python3
+    xmlstarlet joystick python3 \
+    iproute2 libgles2-mesa-dev libdrm-dev libgbm-dev
 
 # RetroPie scripts expect a 'pi' user
 id -u pi &>/dev/null || useradd -m -s /bin/bash pi
@@ -44,11 +45,15 @@ git clone --depth=1 -b yumi-armhf \
     /home/pi/RetroPie-Setup
 chown -R pi:pi /home/pi/RetroPie-Setup
 
-# Patch mali fbdev flags for QEMU builds (Lima/Armbian uses EGL/KMS, not mali fbdev).
+# Patch mali fbdev for QEMU builds (Lima/Armbian uses EGL/KMS, not mali fbdev).
 # On real hardware, RetroPie-Setup detects Lima/Panfrost via /sys/module and skips
-# these flags automatically. In QEMU /sys is unavailable, so we sed them out explicitly.
-sed -i '/enable-video-mali/d' /home/pi/RetroPie-Setup/scriptmodules/supplementary/sdl2.sh
+# these flags automatically. In QEMU /sys is unavailable, so we patch explicitly.
+#
+# 1) Remove ALL mali-fbdev references (depends + configure flags) from both scripts
+sed -i '/mali-fbdev/d'        /home/pi/RetroPie-Setup/scriptmodules/emulators/retroarch.sh
 sed -i '/enable-mali_fbdev/d' /home/pi/RetroPie-Setup/scriptmodules/emulators/retroarch.sh
+sed -i '/mali-fbdev/d'        /home/pi/RetroPie-Setup/scriptmodules/supplementary/sdl2.sh
+sed -i '/enable-video-mali/d' /home/pi/RetroPie-Setup/scriptmodules/supplementary/sdl2.sh
 
 # Force platform for QEMU builds (prevents -march=native on x86 host)
 if [[ "${ARCH}" == "armhf" ]]; then
