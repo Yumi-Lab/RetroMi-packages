@@ -44,6 +44,35 @@ git clone --depth=1 -b yumi-armhf \
     /home/pi/RetroPie-Setup
 chown -R pi:pi /home/pi/RetroPie-Setup
 
+# Patch mali flags for retroarch group (Lima/Armbian uses EGL/KMS, not mali fbdev)
+if [[ "${GROUP}" == "retroarch" ]]; then
+    echo "=== Patching mali fbdev flags for Lima/Armbian ==="
+
+    # Dummy mali-fbdev package (satisfies apt dep check, no actual driver)
+    apt-get install -y equivs -qq
+    cat > /tmp/mali-fbdev-dummy.ctrl << 'EQUIVS_CTRL'
+Section: misc
+Priority: optional
+Standards-Version: 3.9.2
+
+Package: mali-fbdev
+Version: 1.0-retromi
+Maintainer: RetroMi <build@yumi-lab.com>
+Description: Dummy mali-fbdev for Armbian/Lima builds
+EQUIVS_CTRL
+    mkdir -p /tmp/mali-fbdev-build && cp /tmp/mali-fbdev-dummy.ctrl /tmp/mali-fbdev-build/
+    cd /tmp/mali-fbdev-build && equivs-build mali-fbdev-dummy.ctrl
+    dpkg -i /tmp/mali-fbdev-build/mali-fbdev_1.0-retromi_all.deb
+    cd /home/pi/RetroPie-Setup
+
+    # Remove mali video backend from SDL2 (uses fbdev driver absent on Lima)
+    sed -i '/enable-video-mali/d' \
+        /home/pi/RetroPie-Setup/scriptmodules/supplementary/sdl2.sh
+    # Remove mali_fbdev from RetroArch configure
+    sed -i '/enable-mali_fbdev/d' \
+        /home/pi/RetroPie-Setup/scriptmodules/emulators/retroarch.sh
+fi
+
 # Force platform for QEMU builds (prevents -march=native on x86 host)
 if [[ "${ARCH}" == "armhf" ]]; then
     export __platform="armv7-mali"
