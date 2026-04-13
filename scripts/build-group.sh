@@ -44,10 +44,11 @@ git clone --depth=1 -b yumi-armhf \
     /home/pi/RetroPie-Setup
 chown -R pi:pi /home/pi/RetroPie-Setup
 
-# Simulate Lima kernel module for QEMU builds (real H3 has /sys/module/lima natively).
-# RetroPie-Setup's platform_armv7-mali() checks this path to detect KMS/Mesa and
-# skip legacy mali fbdev flags. Without this, QEMU builds get mali fbdev → black screen.
-mkdir -p /sys/module/lima
+# Patch mali fbdev flags for QEMU builds (Lima/Armbian uses EGL/KMS, not mali fbdev).
+# On real hardware, RetroPie-Setup detects Lima/Panfrost via /sys/module and skips
+# these flags automatically. In QEMU /sys is unavailable, so we sed them out explicitly.
+sed -i '/enable-video-mali/d' /home/pi/RetroPie-Setup/scriptmodules/supplementary/sdl2.sh
+sed -i '/enable-mali_fbdev/d' /home/pi/RetroPie-Setup/scriptmodules/emulators/retroarch.sh
 
 # Force platform for QEMU builds (prevents -march=native on x86 host)
 if [[ "${ARCH}" == "armhf" ]]; then
