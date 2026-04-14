@@ -1,2 +1,0 @@
-# Attract Mode — alternative frontend for arcades
-attractmode

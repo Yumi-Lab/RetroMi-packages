@@ -1,2 +1,0 @@
-# mehstation — lightweight game frontend
-mehstation
