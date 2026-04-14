@@ -1,0 +1,2 @@
+# Pegasus — modern game frontend (Qt-based)
+pegasus-fe

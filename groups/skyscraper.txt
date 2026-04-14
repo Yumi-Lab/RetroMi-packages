@@ -1,0 +1,2 @@
+# Skyscraper — game metadata and artwork scraper (ScreenScraper API)
+skyscraper

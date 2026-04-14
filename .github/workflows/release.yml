@@ -42,8 +42,8 @@ jobs:
           MISSING=()
           RELEASE_NOTES="release-notes.md"
 
-          PKG_GROUPS="retroarch arcade arcade-compat nintendo n64 sega sony psp misc openbor scummvm dosbox portables computers amiga japan-computers heavy emulationstation"
-          GROUP_COUNT=18
+          PKG_GROUPS="retroarch arcade arcade-compat nintendo n64 sega sony psp misc openbor scummvm dosbox portables computers amiga japan-computers heavy emulationstation moonlight attractmode skyscraper pegasus-fe mehstation"
+          GROUP_COUNT=23
 
           # Human-readable console names per group
           declare -A GROUP_LABELS
@@ -65,6 +65,11 @@ jobs:
           GROUP_LABELS[japan-computers]="PC-98, PC-88, Sharp X68000, Sharp X1"
           GROUP_LABELS[heavy]="Nintendo DS, Sega Dreamcast, Sega Saturn, 3DO, Atari Jaguar"
           GROUP_LABELS[emulationstation]="EmulationStation frontend"
+          GROUP_LABELS[moonlight]="Moonlight — PC game streaming (NVIDIA/Sunshine)"
+          GROUP_LABELS[attractmode]="Attract Mode — alternative arcade frontend"
+          GROUP_LABELS[skyscraper]="Skyscraper — game metadata/artwork scraper"
+          GROUP_LABELS[pegasus-fe]="Pegasus — modern Qt-based game frontend"
+          GROUP_LABELS[mehstation]="mehstation — lightweight game frontend"
 
           echo "## Package groups" > "${RELEASE_NOTES}"
           echo "" >> "${RELEASE_NOTES}"
