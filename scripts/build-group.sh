@@ -56,6 +56,16 @@ elif [[ "${ARCH}" == "arm64" ]]; then
     export __platform="aarch64"
 fi
 
+# Patch lr-flycast build flags — Flycast binary is too large for Thumb-2 branch
+# relocations on ARM32. Force ARM mode via MFLAGS to avoid R_ARM_THM_CALL overflow.
+# Also sets cortex-a7 + neon-vfpv4 for H3/Mali-400 optimization.
+# Cannot patch RetroPie-Setup directly (must stay vanilla upstream).
+FLYCAST_SCRIPT="/home/pi/RetroPie-Setup/scriptmodules/libretrocores/lr-flycast.sh"
+if [[ -f "${FLYCAST_SCRIPT}" && "${ARCH}" == "armhf" ]]; then
+    sed -i 's/isPlatform "arm" && params+=("WITH_DYNAREC=arm")/isPlatform "arm" \&\& params+=("WITH_DYNAREC=arm" "MFLAGS=-marm -mcpu=cortex-a7 -mfpu=neon-vfpv4 -mfloat-abi=hard")/' "${FLYCAST_SCRIPT}"
+    echo "Patched lr-flycast.sh: added -marm MFLAGS for armhf"
+fi
+
 # Install each package listed in the group file
 cd /home/pi/RetroPie-Setup
 
